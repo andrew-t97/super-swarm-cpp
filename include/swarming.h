@@ -4,6 +4,26 @@
 #include <SFML/Graphics.hpp>
 
 /**
+ * @brief Checks if one bird is within the same neighbourhood radius of another
+ * bird.
+ *
+ * This function determines whether the distance between two birds is within a
+ * specified neighbourhood radius.
+ *
+ * @param bird The reference bird whose neighbourhood is being checked.
+ * @param other The other bird to check if it is within the neighbourhood
+ * radius.
+ * @param neighbourhoodRadius The radius within which the other bird must be to
+ * be considered in the same neighbourhood.
+ * @return true If the other bird is within the neighbourhood radius of the
+ * reference bird.
+ * @return false If the other bird is outside the neighbourhood radius of the
+ * reference bird.
+ */
+bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
+                               const float neighbourhoodRadius);
+
+/**
  * @brief Computes the alignment force for a given bird based on its neighbors.
  *
  * This function calculates the alignment force for a bird, which is a steering
@@ -20,8 +40,7 @@
  * bird.
  */
 sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
-                              const float neighbourhoodRadius,
-                              const float maxSpeed);
+                              const float neighbourhoodRadius);
 
 /**
  * @brief Computes the cohesion vector for a given bird within a flock.
@@ -39,8 +58,7 @@ sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
  * @return A vector representing the cohesion force to be applied to the bird.
  */
 sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
-                             const float neighbourhoodRadius,
-                             const float maxSpeed);
+                             const float neighbourhoodRadius);
 
 /**
  * @brief Computes the separation force for a given bird to avoid crowding local
@@ -59,5 +77,4 @@ sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
  * @return A vector representing the separation force to be applied to the bird.
  */
 sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
-                               const float separationRadius,
-                               const float maxSpeed);
+                               const float separationRadius);
