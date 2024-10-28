@@ -11,10 +11,13 @@ Bird::Bird(float x, float y) : position(x, y) {
 }
 
 void Bird::update(const sf::Vector2f &alignment, const sf::Vector2f &cohesion,
-                  const sf::Vector2f &separation, const float maxSpeed) {
+                  const sf::Vector2f &separation, const float maxSpeed,
+                  const sf::Vector2u &boundary) {
   velocity += alignment + cohesion + separation;
 
   cap_vector_to_max_speed(velocity, maxSpeed);
+
+  // TODO: Do boundary limitation, bounce bird off wall at random.
 
   position += velocity;
   shape.setPosition(position);

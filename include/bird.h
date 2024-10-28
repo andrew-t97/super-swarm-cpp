@@ -13,5 +13,6 @@ public:
   Bird(float startPosX, float startPosY);
 
   void update(const sf::Vector2f &alignment, const sf::Vector2f &cohesion,
-              const sf::Vector2f &separation, const float maxSpeed);
+              const sf::Vector2f &separation, const float maxSpeed,
+              const sf::Vector2u &boundary);
 };

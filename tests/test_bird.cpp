@@ -15,9 +15,10 @@ TEST(TestBird,
   const sf::Vector2f separation(0.1f, 0.1f);
 
   const float maxSpeed = 2.0f;
+  const sf::Vector2u boundary(50, 50);
 
   // Test
-  testBird.update(alignment, cohesion, separation, maxSpeed);
+  testBird.update(alignment, cohesion, separation, maxSpeed, boundary);
 
   // Assert
   sf::Vector2f expectedNewVelocity(1.3f, 1.3f);
@@ -40,6 +41,7 @@ TEST(TestBird, TestUpdateCapsNewVelocityAtMaxSpeed) {
   const sf::Vector2f separation(0.2f, 0.2f);
 
   const float maxSpeed = 2.0f;
+  const sf::Vector2u boundary(50, 50);
 
   sf::Vector2f expectedNewVelocity =
       testBird.velocity + alignment + cohesion + separation;
@@ -48,7 +50,7 @@ TEST(TestBird, TestUpdateCapsNewVelocityAtMaxSpeed) {
   sf::Vector2f expectedNewPosition = testBird.position + expectedNewVelocity;
 
   // Test
-  testBird.update(alignment, cohesion, separation, maxSpeed);
+  testBird.update(alignment, cohesion, separation, maxSpeed, boundary);
 
   // Assert
   ASSERT_FLOAT_EQ(expectedNewVelocity.x, testBird.velocity.x);
