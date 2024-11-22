@@ -7,6 +7,8 @@
 #define NEIGHBOURHOOD_RADIUS 2.0f
 #define MAX_BIRD_SPEED 0.1f
 
+// TODO: stop birds getting stuck on top of one another
+
 int main(int argc, char const *argv[]) {
   srand(static_cast<unsigned>(time(0)));
 
@@ -27,7 +29,7 @@ int main(int argc, char const *argv[]) {
 
     window.clear();
 
-    // Update boids
+    // Update birds
     for (Bird &bird : birds) {
       sf::Vector2f alignment =
           computeAlignment(bird, birds, NEIGHBOURHOOD_RADIUS);
