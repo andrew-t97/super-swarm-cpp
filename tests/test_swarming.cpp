@@ -101,10 +101,10 @@ TEST_F(TestSwarmComputation, TestComputeSeparation) {
 
   // Test
   sf::Vector2f separation =
-      computeSeparation(*testBird, *otherBirds, separationRadius);
+      computeSeparation(*testBird, *otherBirds, separationRadius, 1.0f);
 
   // Assert
-  sf::Vector2f expectedSeparation = sf::Vector2f(-1.7071068, -1.7071068);
+  sf::Vector2f expectedSeparation = sf::Vector2f(-0.707106769, -0.707106769);
 
   ASSERT_FLOAT_EQ(expectedSeparation.x, separation.x);
   ASSERT_FLOAT_EQ(expectedSeparation.y, separation.y);
@@ -170,7 +170,7 @@ TEST_F(TestSwarmComputationWithNoNeighbours,
 
   // Test
   sf::Vector2f separation =
-      computeSeparation(*testBird, *otherBirds, separationRadius);
+      computeSeparation(*testBird, *otherBirds, separationRadius, 1.0f);
 
   // Assert
   sf::Vector2f expectedSeparation = sf::Vector2f(0.0f, 0.0f);

@@ -7,8 +7,6 @@
 #define NEIGHBOURHOOD_RADIUS 2.0f
 #define MAX_BIRD_SPEED 0.1f
 
-// TODO: stop birds getting stuck on top of one another
-
 int main(int argc, char const *argv[]) {
   srand(static_cast<unsigned>(time(0)));
 
@@ -36,7 +34,7 @@ int main(int argc, char const *argv[]) {
       sf::Vector2f cohesion =
           computeCohesion(bird, birds, NEIGHBOURHOOD_RADIUS);
       sf::Vector2f separation =
-          computeSeparation(bird, birds, NEIGHBOURHOOD_RADIUS * 2);
+          computeSeparation(bird, birds, NEIGHBOURHOOD_RADIUS * 2, 12.0f);
 
       bird.update(alignment, cohesion, separation, MAX_BIRD_SPEED, windowSize);
 

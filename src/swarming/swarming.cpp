@@ -1,6 +1,8 @@
 #include "swarming.h"
 #include "utils.h"
 
+#include <cmath>
+
 bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
                                const float neighbourhoodRadius) {
   float distanceBetweenBirds = std::hypot(other.position.x - bird.position.y,
@@ -8,6 +10,7 @@ bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
   return (distanceBetweenBirds < neighbourhoodRadius);
 }
 
+// TODO: Add normalisation and weight
 sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
                               const float neighbourhoodRadius) {
   sf::Vector2f alignment(0.0f, 0.0f);
@@ -33,6 +36,7 @@ sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
   return alignment;
 }
 
+// TODO: Add normalisation and weight
 sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
                              const float neighbourhoodRadius) {
   sf::Vector2f cohesion(0.0f, 0.0f);
@@ -59,7 +63,8 @@ sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
 }
 
 sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
-                               const float separationRadius) {
+                               const float separationRadius,
+                               const float weight) {
   sf::Vector2f separation(0.0f, 0.0f);
   int no_neighbours = 0;
 
@@ -68,21 +73,22 @@ sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
                                 other.position.y - bird.position.y);
 
     if (&bird != &other && distance < separationRadius) {
-      sf::Vector2f repulsion = bird.position - other.position;
+      sf::Vector2f difference = bird.position - other.position;
 
-      if (distance > 0)
-        repulsion /= distance; // repulsion is weighted by proximity
+      sf::Vector2f repulsion =
+          difference * (float)pow(1 - (norm(difference) / separationRadius), 2);
 
       separation += repulsion;
+
       ++no_neighbours;
     }
   }
 
   if (no_neighbours > 0) {
-    separation /= static_cast<float>(
-        no_neighbours); // Taking the average separation of all neighbours
-    separation -= bird.velocity; // Calculates the steering force to be applied
-                                 // to the bird's current velocity
+    separation /= (float)(no_neighbours); // Taking the average separation of
+                                          // all neighbours
+    sf::Vector2f normalisedSeparation = separation / norm(separation);
+    separation = normalisedSeparation * weight;
   }
 
   return separation;

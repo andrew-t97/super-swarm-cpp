@@ -77,4 +77,5 @@ sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
  * @return A vector representing the separation force to be applied to the bird.
  */
 sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
-                               const float separationRadius);
+                               const float separationRadius,
+                               const float weight);
