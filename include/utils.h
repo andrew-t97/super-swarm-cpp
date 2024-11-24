@@ -4,4 +4,6 @@
 
 float norm(sf::Vector2f vec);
 
-void cap_vector_to_max_speed(sf::Vector2f &vec, float maxSpeed);
+void limit_vector(sf::Vector2f &vec, float limit);
+
+void setVecMag(sf::Vector2f &vec, float mag);

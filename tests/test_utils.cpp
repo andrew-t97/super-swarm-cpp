@@ -10,7 +10,7 @@ TEST(TestCapVectorToSpeed, SpeedIsCappedWhenVectorAboveMaxSpeed) {
   sf::Vector2f vec(1.0f, 2.0f);
 
   // Test
-  cap_vector_to_max_speed(vec, max_speed);
+  limit_vector(vec, max_speed);
 
   // Assert
   sf::Vector2f expectedVec(0.89442719f, 1.7888544f);
@@ -25,7 +25,7 @@ TEST(TestCapVectorSpeed, SpeedIsNotCappedWhenVectorBelowMaxSpeed) {
   sf::Vector2f vec(1.0f, 1.0f);
 
   // Test
-  cap_vector_to_max_speed(vec, max_speed);
+  limit_vector(vec, max_speed);
 
   // Assert
   sf::Vector2f expectedVec(1.0f, 1.0f);

@@ -45,7 +45,7 @@ TEST(TestBird, TestUpdateCapsNewVelocityAtMaxSpeed) {
 
   sf::Vector2f expectedNewVelocity =
       testBird.velocity + alignment + cohesion + separation;
-  cap_vector_to_max_speed(expectedNewVelocity, maxSpeed);
+  limit_vector(expectedNewVelocity, maxSpeed);
 
   sf::Vector2f expectedNewPosition = testBird.position + expectedNewVelocity;
 

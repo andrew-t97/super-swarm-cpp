@@ -9,11 +9,20 @@ float norm(sf::Vector2f vec) {
   return norm;
 }
 
-// TODO: Validate this works in both negative and positive directions
-void cap_vector_to_max_speed(sf::Vector2f &vec, float maxSpeed) {
-  float speed = std::sqrt(std::pow(vec.x, 2) + std::pow(vec.y, 2));
+void setVecMag(sf::Vector2f &vec, float mag) {
+  float cur_mag = norm(vec);
 
-  if (speed > maxSpeed) {
-    vec = (vec / speed) * maxSpeed;
+  if (cur_mag != 0) {
+    sf::Vector2f normalisedVec = vec / cur_mag;
+    vec = normalisedVec * mag;
+  }
+}
+
+// TODO: Validate this works in both negative and positive directions
+void limit_vector(sf::Vector2f &vec, float limit) {
+  float speed = norm(vec);
+
+  if (speed > limit) {
+    vec = (vec / speed) * limit;
   }
 }

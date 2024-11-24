@@ -49,6 +49,7 @@ protected:
   std::unique_ptr<Bird> testBird;
   std::unique_ptr<std::vector<Bird>> otherBirds;
   const float neighbourhoodRadius = 1.6f;
+  const float weight = 1.0f;
 
   void SetUp() override {
 
@@ -73,8 +74,8 @@ protected:
 
 TEST_F(TestSwarmComputation, TestComputeAlignment) {
   // Test
-  sf::Vector2f alignment =
-      computeAlignment(*testBird, *otherBirds, neighbourhoodRadius);
+  sf::Vector2f alignment = computeAlignment(*testBird, *otherBirds,
+                                            neighbourhoodRadius, weight, 3.0f);
 
   // Assert
   sf::Vector2f expectedAlignment = sf::Vector2f(-0.850000023f, -0.850000023f);
@@ -85,8 +86,8 @@ TEST_F(TestSwarmComputation, TestComputeAlignment) {
 
 TEST_F(TestSwarmComputation, TestComputeCohesion) {
   // Test
-  sf::Vector2f cohesion =
-      computeCohesion(*testBird, *otherBirds, neighbourhoodRadius);
+  sf::Vector2f cohesion = computeCohesion(*testBird, *otherBirds,
+                                          neighbourhoodRadius, weight, 3.0f);
 
   // Assert
   sf::Vector2f expectedCohesion = sf::Vector2f(-0.65, -0.65);
@@ -101,7 +102,7 @@ TEST_F(TestSwarmComputation, TestComputeSeparation) {
 
   // Test
   sf::Vector2f separation =
-      computeSeparation(*testBird, *otherBirds, separationRadius, 1.0f);
+      computeSeparation(*testBird, *otherBirds, separationRadius, weight, 3.0f);
 
   // Assert
   sf::Vector2f expectedSeparation = sf::Vector2f(-0.707106769, -0.707106769);
@@ -115,6 +116,7 @@ protected:
   std::unique_ptr<Bird> testBird;
   std::unique_ptr<std::vector<Bird>> otherBirds;
   const float neighbourhoodRadius = 1.6f;
+  const float weight = 1.0f;
 
   void SetUp() override {
 
@@ -140,8 +142,8 @@ protected:
 TEST_F(TestSwarmComputationWithNoNeighbours,
        TestComputeAlignmentCalculatesZeroWhenNoNeighbours) {
   // Test
-  sf::Vector2f alignment =
-      computeAlignment(*testBird, *otherBirds, neighbourhoodRadius);
+  sf::Vector2f alignment = computeAlignment(*testBird, *otherBirds,
+                                            neighbourhoodRadius, weight, 3.0f);
 
   // Assert
   sf::Vector2f expectedAlignment = sf::Vector2f(0.0f, 0.0f);
@@ -153,8 +155,8 @@ TEST_F(TestSwarmComputationWithNoNeighbours,
 TEST_F(TestSwarmComputationWithNoNeighbours,
        TestComputeCohesionCalculatesZeroWhenNoNeighbours) {
   // Test
-  sf::Vector2f cohesion =
-      computeCohesion(*testBird, *otherBirds, neighbourhoodRadius);
+  sf::Vector2f cohesion = computeCohesion(*testBird, *otherBirds,
+                                          neighbourhoodRadius, weight, 3.0f);
 
   // Assert
   sf::Vector2f expectedCohesion = sf::Vector2f(0.0f, 0.0f);
@@ -170,7 +172,7 @@ TEST_F(TestSwarmComputationWithNoNeighbours,
 
   // Test
   sf::Vector2f separation =
-      computeSeparation(*testBird, *otherBirds, separationRadius, 1.0f);
+      computeSeparation(*testBird, *otherBirds, separationRadius, weight, 3.0f);
 
   // Assert
   sf::Vector2f expectedSeparation = sf::Vector2f(0.0f, 0.0f);

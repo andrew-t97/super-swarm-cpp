@@ -4,18 +4,31 @@
 #include <cstdlib>
 #include <ctime>
 
-#define NEIGHBOURHOOD_RADIUS 2.0f
-#define MAX_BIRD_SPEED 0.1f
+#define ALIGN_RADIUS 70.0f
+#define COHESEION_RADIUS 70.0f
+#define SEPARATION_RADIUS 30.0f
+#define MAX_BIRD_SPEED 6.0f
+#define NUM_BIRDS 500
+#define ALIGNMENT_WEIGHT 0.5f
+#define COHESION_WEIGHT 0.5f
+#define SEPARATION_WEIGHT 0.5f
+#define FPS 60.0f
 
 int main(int argc, char const *argv[]) {
-  srand(static_cast<unsigned>(time(0)));
+  sf::Clock clock;
+  const sf::Time timePerFrame = sf::seconds(1.0f / FPS);
 
-  sf::RenderWindow window(sf::VideoMode(800, 600), "Swarm Demo");
+  srand(static_cast<unsigned>(time(0))); // Setting up random
+
+  unsigned int width = sf::VideoMode::getDesktopMode().width;
+  unsigned int height = sf::VideoMode::getDesktopMode().height;
+
+  sf::RenderWindow window(sf::VideoMode(width, height), "Swarm Demo");
   sf::Vector2u windowSize = window.getSize();
 
   std::vector<Bird> birds;
-  for (int i = 0; i < 100; i++) {
-    birds.emplace_back(rand() % 800, rand() % 600);
+  for (int i = 0; i < NUM_BIRDS; i++) {
+    birds.emplace_back(rand() % width, rand() % height);
   }
 
   while (window.isOpen()) {
@@ -29,12 +42,14 @@ int main(int argc, char const *argv[]) {
 
     // Update birds
     for (Bird &bird : birds) {
-      sf::Vector2f alignment =
-          computeAlignment(bird, birds, NEIGHBOURHOOD_RADIUS);
-      sf::Vector2f cohesion =
-          computeCohesion(bird, birds, NEIGHBOURHOOD_RADIUS);
-      sf::Vector2f separation =
-          computeSeparation(bird, birds, NEIGHBOURHOOD_RADIUS * 2, 12.0f);
+      sf::Vector2f alignment = computeAlignment(
+          bird, birds, ALIGN_RADIUS, ALIGNMENT_WEIGHT, MAX_BIRD_SPEED);
+
+      sf::Vector2f cohesion = computeCohesion(bird, birds, COHESEION_RADIUS,
+                                              COHESION_WEIGHT, MAX_BIRD_SPEED);
+
+      sf::Vector2f separation = computeSeparation(
+          bird, birds, SEPARATION_RADIUS, SEPARATION_WEIGHT, MAX_BIRD_SPEED);
 
       bird.update(alignment, cohesion, separation, MAX_BIRD_SPEED, windowSize);
 
@@ -42,6 +57,13 @@ int main(int argc, char const *argv[]) {
     }
 
     window.display();
+
+    sf::Time elapsed = clock.getElapsedTime();
+    if (elapsed < timePerFrame) {
+      sf::sleep(timePerFrame - elapsed); // Sleep for remaining time of tick
+    }
+
+    clock.restart(); // Restart the clock for the next loop
   }
 
   return 0;
