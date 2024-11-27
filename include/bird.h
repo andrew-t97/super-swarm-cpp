@@ -4,37 +4,36 @@
 
 #define MAX_BIRD_SPEED 6.0f
 
+typedef struct {
+  const float alignmentRadius;
+  const float cohesionRadius;
+  const float separationRadius;
+} perceptionRadius;
+
 class Bird {
 
 public:
-  float maxSpeed = MAX_BIRD_SPEED;
+  const float maxSpeed;
+  const sf::Vector2u boundary;
+  const perceptionRadius perception;
 
   sf::Vector2f position;
   sf::Vector2f velocity;
   sf::CircleShape shape; // Defines a triangle
-  sf::Vector2u boundary;
 
   Bird(float startPosX, float startPosY, const sf::Vector2u &boundary,
-       float maxSpeed = MAX_BIRD_SPEED);
+       const perceptionRadius &perception, float maxSpeed = MAX_BIRD_SPEED);
 
   /**
    * @brief Updates the bird's position based on separation, cohesion, and
    * alignment
    *
    * This function updates the bird's position, taking into account the provided
-   * separation, cohesion, and alignment, steering the bird in a particular
-   * direction. The bird's velocity (which is adjusted by the alignment,
-   * cohesion, and alignment) will not exceed the provided max speed and will
-   * keep within the provided boundary.
+   * acceleration steering the bird in a particular
+   * direction. The bird's velocity will not exceed its max speed and
+   * will keep within its boundary.
    *
-   * @param alignment The vector the bird should head towards based on the
-   * direction of other nearby birds.
-   * @param cohesion The vector the bird should head towards to stay close to
-   * other birds.
-   * @param separation The vector the bird should head towards to not get too
-   * close to other birds.
-   * @param maxSpeed The maximum speed the bird is allowed to travel.
-   * @param boundary The boundary the bird must stay within.
+   * @param acceleration How much the bird's velocity should change.
    */
   void update(const sf::Vector2f &acceleration);
   void render(sf::RenderWindow &renderWindow);

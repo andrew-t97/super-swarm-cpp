@@ -14,15 +14,14 @@ bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
 }
 
 sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
-                              const float neighbourhoodRadius,
                               const float weight) {
   sf::Vector2f alignment(0.0f, 0.0f);
   int no_neighbours = 0;
 
   for (const Bird &other : birds) {
 
-    if (&bird != &other &&
-        isBirdInSameNeighbourhood(bird, other, neighbourhoodRadius)) {
+    if (&bird != &other && isBirdInSameNeighbourhood(
+                               bird, other, bird.perception.alignmentRadius)) {
       alignment += other.velocity;
       ++no_neighbours;
     }
@@ -48,14 +47,13 @@ sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
 }
 
 sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
-                             const float neighbourhoodRadius,
                              const float weight) {
   sf::Vector2f cohesion(0.0f, 0.0f);
   int no_neighbours = 0;
 
   for (const Bird &other : birds) {
-    if (&bird != &other &&
-        isBirdInSameNeighbourhood(bird, other, neighbourhoodRadius)) {
+    if (&bird != &other && isBirdInSameNeighbourhood(
+                               bird, other, bird.perception.cohesionRadius)) {
       cohesion += other.position;
       ++no_neighbours;
     }
@@ -79,7 +77,6 @@ sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
 }
 
 sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
-                               const float separationRadius,
                                const float weight) {
   sf::Vector2f separation(0.0f, 0.0f);
   int no_neighbours = 0;
@@ -88,11 +85,13 @@ sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
     float distance = std::hypot(other.position.x - bird.position.x,
                                 other.position.y - bird.position.y);
 
-    if (&bird != &other && distance < separationRadius) {
+    if (&bird != &other && distance < bird.perception.separationRadius) {
       sf::Vector2f difference = bird.position - other.position;
 
       sf::Vector2f repulsion =
-          difference * (float)pow(1 - (norm(difference) / separationRadius), 2);
+          difference *
+          (float)pow(1 - (norm(difference) / bird.perception.separationRadius),
+                     2);
 
       separation += repulsion;
 

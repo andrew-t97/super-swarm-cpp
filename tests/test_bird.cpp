@@ -13,10 +13,13 @@ protected:
   static constexpr float maxSpeed = 2.0f;
 
   void SetUp() override {
+    const perceptionRadius perception{70.0f, 70.0f, 30.0f};
+
     birdVelocity = std::make_unique<sf::Vector2f>(1.0f, 1.0f);
 
     boundary = std::make_unique<sf::Vector2u>(50, 50);
-    testBird = std::make_unique<Bird>(1.0f, 1.0f, *boundary, maxSpeed);
+    testBird =
+        std::make_unique<Bird>(1.0f, 1.0f, *boundary, perception, maxSpeed);
     testBird->velocity = *birdVelocity;
   }
 

@@ -3,8 +3,10 @@
 
 #include <random>
 
-Bird::Bird(float x, float y, const sf::Vector2u &boundary, float maxSpeed)
-    : position(x, y), maxSpeed(maxSpeed), boundary(boundary) {
+Bird::Bird(float x, float y, const sf::Vector2u &boundary,
+           const perceptionRadius &perception, float maxSpeed)
+    : position(x, y), maxSpeed(maxSpeed), boundary(boundary),
+      perception(perception) {
 
   std::random_device rd;  // obtain a random number from hardware
   std::mt19937 gen(rd()); // seed generator

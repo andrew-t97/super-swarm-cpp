@@ -7,6 +7,10 @@
 
 #define NUM_BIRDS 200
 
+#define ALIGNMENT_PERCENT 0.00008f
+#define COHESION_PERCENT 0.00008f
+#define SEPARATION_RADIUS 30.0f
+
 #define FPS 60.0f
 
 int main(int argc, char const *argv[]) {
@@ -21,9 +25,18 @@ int main(int argc, char const *argv[]) {
   sf::RenderWindow window(sf::VideoMode(width, height), "Swarm Demo");
   sf::Vector2u windowSize = window.getSize();
 
+  float alignment = windowSize.x * windowSize.y * ALIGNMENT_PERCENT;
+  float cohesion = windowSize.x * windowSize.y * COHESION_PERCENT;
+
+  const perceptionRadius perception = {
+      alignment,
+      cohesion,
+      SEPARATION_RADIUS,
+  };
+
   std::vector<Bird> birds;
   for (int i = 0; i < NUM_BIRDS; i++) {
-    birds.emplace_back(rand() % width, rand() % height, windowSize);
+    birds.emplace_back(rand() % width, rand() % height, windowSize, perception);
   }
 
   BirdSwarm birdSwarm(birds);
