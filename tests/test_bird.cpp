@@ -4,58 +4,63 @@
 #include "bird.h"
 #include "utils.h"
 
-TEST(TestBird,
-     TestUpdateCalculatesNewVelocityAndPositionCorrectlyWhenBelowMaxSpeed) {
+class TestBird : public ::testing::Test {
+protected:
+  std::unique_ptr<Bird> testBird;
+  std::unique_ptr<const sf::Vector2u> boundary;
+  std::unique_ptr<const sf::Vector2f> birdVelocity;
+
+  static constexpr float maxSpeed = 2.0f;
+
+  void SetUp() override {
+    birdVelocity = std::make_unique<sf::Vector2f>(1.0f, 1.0f);
+
+    boundary = std::make_unique<sf::Vector2u>(50, 50);
+    testBird = std::make_unique<Bird>(1.0f, 1.0f, *boundary, maxSpeed);
+    testBird->velocity = *birdVelocity;
+  }
+
+  void TearDown() override {}
+};
+
+TEST_F(TestBird,
+       TestUpdateCalculatesNewVelocityAndPositionCorrectlyWhenBelowMaxSpeed) {
   // Fixture
-  Bird testBird(1.0f, 1.0f);
-  testBird.velocity = sf::Vector2f(1.0f, 1.0f);
 
-  const sf::Vector2f alignment(0.1f, 0.1f);
-  const sf::Vector2f cohesion(0.1f, 0.1f);
-  const sf::Vector2f separation(0.1f, 0.1f);
-
-  const float maxSpeed = 2.0f;
-  const sf::Vector2u boundary(50, 50);
+  const sf::Vector2f acceleration(0.3f, 0.3f);
+  const sf::Vector2f birdPosition = testBird->position;
 
   // Test
-  testBird.update(alignment, cohesion, separation, maxSpeed, boundary);
+  testBird->update(acceleration);
 
   // Assert
-  sf::Vector2f expectedNewVelocity(1.3f, 1.3f);
-  sf::Vector2f expectedNewPosition(2.3f, 2.3f);
+  sf::Vector2f expectedNewVelocity = *birdVelocity + acceleration;
+  sf::Vector2f expectedNewPosition = birdPosition + expectedNewVelocity;
 
-  ASSERT_FLOAT_EQ(expectedNewVelocity.x, testBird.velocity.x);
-  ASSERT_FLOAT_EQ(expectedNewVelocity.y, testBird.velocity.y);
+  ASSERT_FLOAT_EQ(expectedNewVelocity.x, testBird->velocity.x);
+  ASSERT_FLOAT_EQ(expectedNewVelocity.y, testBird->velocity.y);
 
-  ASSERT_FLOAT_EQ(expectedNewPosition.x, testBird.position.x);
-  ASSERT_FLOAT_EQ(expectedNewPosition.y, testBird.position.y);
+  ASSERT_FLOAT_EQ(expectedNewPosition.x, testBird->position.x);
+  ASSERT_FLOAT_EQ(expectedNewPosition.y, testBird->position.y);
 }
 
-TEST(TestBird, TestUpdateCapsNewVelocityAtMaxSpeed) {
+TEST_F(TestBird, TestUpdateCapsNewVelocityAtMaxSpeed) {
   // Fixture
-  Bird testBird(1.0f, 1.0f);
-  testBird.velocity = sf::Vector2f(1.0f, 1.0f);
 
-  const sf::Vector2f alignment(0.2f, 0.2f);
-  const sf::Vector2f cohesion(0.2f, 0.2f);
-  const sf::Vector2f separation(0.2f, 0.2f);
+  const sf::Vector2f acceleration(0.6f, 0.6f);
 
-  const float maxSpeed = 2.0f;
-  const sf::Vector2u boundary(50, 50);
+  sf::Vector2f expectedNewVelocity = *birdVelocity + acceleration;
+  limit_vector(expectedNewVelocity, testBird->maxSpeed);
 
-  sf::Vector2f expectedNewVelocity =
-      testBird.velocity + alignment + cohesion + separation;
-  limit_vector(expectedNewVelocity, maxSpeed);
-
-  sf::Vector2f expectedNewPosition = testBird.position + expectedNewVelocity;
+  sf::Vector2f expectedNewPosition = testBird->position + expectedNewVelocity;
 
   // Test
-  testBird.update(alignment, cohesion, separation, maxSpeed, boundary);
+  testBird->update(acceleration);
 
   // Assert
-  ASSERT_FLOAT_EQ(expectedNewVelocity.x, testBird.velocity.x);
-  ASSERT_FLOAT_EQ(expectedNewVelocity.y, testBird.velocity.y);
+  ASSERT_FLOAT_EQ(expectedNewVelocity.x, testBird->velocity.x);
+  ASSERT_FLOAT_EQ(expectedNewVelocity.y, testBird->velocity.y);
 
-  ASSERT_FLOAT_EQ(expectedNewPosition.x, testBird.position.x);
-  ASSERT_FLOAT_EQ(expectedNewPosition.y, testBird.position.y);
+  ASSERT_FLOAT_EQ(expectedNewPosition.x, testBird->position.x);
+  ASSERT_FLOAT_EQ(expectedNewPosition.y, testBird->position.y);
 }

@@ -15,7 +15,7 @@ bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
 
 sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
                               const float neighbourhoodRadius,
-                              const float weight, const float maxSpeed) {
+                              const float weight) {
   sf::Vector2f alignment(0.0f, 0.0f);
   int no_neighbours = 0;
 
@@ -33,7 +33,7 @@ sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
     alignment /= (float)(no_neighbours);
 
     // Set magnitude/speed to max
-    setVecMag(alignment, maxSpeed);
+    setVecMag(alignment, bird.maxSpeed);
 
     // Find the difference between the birds
     alignment -= bird.velocity;
@@ -79,8 +79,8 @@ sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
 }
 
 sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
-                               const float separationRadius, const float weight,
-                               const float maxSpeed) {
+                               const float separationRadius,
+                               const float weight) {
   sf::Vector2f separation(0.0f, 0.0f);
   int no_neighbours = 0;
 
@@ -105,7 +105,7 @@ sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
     // all neighbours
 
     // Set magnitude/speed to max
-    setVecMag(separation, maxSpeed);
+    setVecMag(separation, bird.maxSpeed);
 
     separation -= bird.velocity;
 

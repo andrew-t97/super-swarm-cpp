@@ -41,7 +41,7 @@ bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
  */
 sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
                               const float neighbourhoodRadius,
-                              const float weight, const float maxSpeed);
+                              const float weight);
 
 /**
  * @brief Computes the cohesion vector for a given bird within a flock.
@@ -78,5 +78,5 @@ sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
  * @return A vector representing the separation force to be applied to the bird.
  */
 sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
-                               const float separationRadius, const float weight,
-                               const float maxSpeed);
+                               const float separationRadius,
+                               const float weight);

@@ -3,14 +3,16 @@
 
 #include <random>
 
-Bird::Bird(float x, float y) : position(x, y) {
-  shape.setPosition(position);
-  shape.setRadius(5.0f);
+Bird::Bird(float x, float y, const sf::Vector2u &boundary, float maxSpeed)
+    : position(x, y), maxSpeed(maxSpeed), boundary(boundary) {
 
   std::random_device rd;  // obtain a random number from hardware
   std::mt19937 gen(rd()); // seed generator
   std::uniform_int_distribution<> colorDistr(0, 255);
   std::uniform_real_distribution<> velocityDistr(-100.0f, 100.0f);
+
+  shape.setPosition(position);
+  shape.setRadius(5.0f);
 
   shape.setFillColor(
       sf::Color(colorDistr(gen), colorDistr(gen), colorDistr(gen)));
@@ -18,9 +20,7 @@ Bird::Bird(float x, float y) : position(x, y) {
   velocity = sf::Vector2f(velocityDistr(gen), velocityDistr(gen));
 }
 
-void Bird::keep_bird_within_boundary(const sf::Vector2u &boundary,
-                                     const sf::Vector2f &position,
-                                     sf::Vector2f &velocity) {
+void Bird::keep_bird_within_boundary() {
 
   sf::Vector2f new_position = position + velocity;
   if (new_position.x > boundary.x || new_position.x < 0) {
@@ -32,17 +32,17 @@ void Bird::keep_bird_within_boundary(const sf::Vector2u &boundary,
   }
 }
 
-void Bird::update(const sf::Vector2f &alignment, const sf::Vector2f &cohesion,
-                  const sf::Vector2f &separation, const float maxSpeed,
-                  const sf::Vector2u &boundary) {
+void Bird::update(const sf::Vector2f &acceleration) {
 
-  velocity += alignment + cohesion + separation;
+  velocity += acceleration;
 
   limit_vector(velocity, maxSpeed);
 
-  keep_bird_within_boundary(boundary, position, velocity);
+  keep_bird_within_boundary();
 
   position += velocity;
 
   shape.setPosition(position);
 }
+
+void Bird::render(sf::RenderWindow &window) { window.draw(shape); }

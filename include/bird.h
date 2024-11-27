@@ -2,14 +2,20 @@
 
 #include <SFML/Graphics.hpp>
 
+#define MAX_BIRD_SPEED 6.0f
+
 class Bird {
 
 public:
+  float maxSpeed = MAX_BIRD_SPEED;
+
   sf::Vector2f position;
   sf::Vector2f velocity;
   sf::CircleShape shape; // Defines a triangle
+  sf::Vector2u boundary;
 
-  Bird(float startPosX, float startPosY);
+  Bird(float startPosX, float startPosY, const sf::Vector2u &boundary,
+       float maxSpeed = MAX_BIRD_SPEED);
 
   /**
    * @brief Updates the bird's position based on separation, cohesion, and
@@ -30,10 +36,8 @@ public:
    * @param maxSpeed The maximum speed the bird is allowed to travel.
    * @param boundary The boundary the bird must stay within.
    */
-  void
-  update(const sf::Vector2f &alignment, const sf::Vector2f &cohesion,
-         const sf::Vector2f &separation, const float maxSpeed,
-         const sf::Vector2u &boundary); // TODO: Remove boundary and maxSpeed.
+  void update(const sf::Vector2f &acceleration);
+  void render(sf::RenderWindow &renderWindow);
 
 private:
   /**
@@ -46,13 +50,6 @@ private:
    * dimension when the velocity is applied, then the dimension will be flipped,
    * moving it in the opposite direction. The velocity changes are made
    * in-place.
-   *
-   * @param boundary The boundary we're checking the position and velocity
-   * against.
-   * @param position The position we wish to apply the velocity to.
-   * @param velocity The velocity we wish to apply to the provided position
    */
-  void keep_bird_within_boundary(const sf::Vector2u &boundary,
-                                 const sf::Vector2f &position,
-                                 sf::Vector2f &velocity);
+  void keep_bird_within_boundary();
 };

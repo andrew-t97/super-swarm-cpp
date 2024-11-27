@@ -5,12 +5,14 @@
 
 class TestisBirdInSameNeighbourhood : public ::testing::Test {
 protected:
+  std::unique_ptr<const sf::Vector2u> boundary;
   std::unique_ptr<const Bird> testBird;
   std::unique_ptr<const Bird> otherBird;
 
   void SetUp() override {
-    testBird = std::make_unique<const Bird>(1.0f, 1.0f);
-    otherBird = std::make_unique<const Bird>(1.5f, 1.5f);
+    boundary = std::make_unique<const sf::Vector2u>(50, 50);
+    testBird = std::make_unique<const Bird>(1.0f, 1.0f, *boundary);
+    otherBird = std::make_unique<const Bird>(1.5f, 1.5f, *boundary);
   }
 
   void TearDown() override {
@@ -46,22 +48,25 @@ TEST_F(TestisBirdInSameNeighbourhood,
 
 class TestSwarmComputation : public ::testing::Test {
 protected:
+  std::unique_ptr<const sf::Vector2u> boundary;
   std::unique_ptr<Bird> testBird;
   std::unique_ptr<std::vector<Bird>> otherBirds;
-  const float neighbourhoodRadius = 1.6f;
-  const float weight = 1.0f;
-  const float max_speed = 0.1f;
+
+  static constexpr float maxSpeed = 0.1f;
+  static constexpr float neighbourhoodRadius = 1.6f;
+  static constexpr float weight = 1.0f;
 
   void SetUp() override {
 
-    testBird = std::make_unique<Bird>(1.0f, 1.0f);
-    testBird->velocity = sf::Vector2f(0.2f, 0.2f);
-
+    boundary = std::make_unique<const sf::Vector2u>(50, 50);
+    testBird = std::make_unique<Bird>(1.0f, 1.0f, *boundary, maxSpeed);
     otherBirds = std::make_unique<std::vector<Bird>>();
 
-    otherBirds->emplace_back(1.5f, 1.5f);
-    otherBirds->emplace_back(3.0f, 3.0f);
-    otherBirds->emplace_back(1.2f, 1.2f);
+    testBird->velocity = sf::Vector2f(0.2f, 0.2f);
+
+    otherBirds->emplace_back(1.5f, 1.5f, *boundary, maxSpeed);
+    otherBirds->emplace_back(3.0f, 3.0f, *boundary, maxSpeed);
+    otherBirds->emplace_back(1.2f, 1.2f, *boundary, maxSpeed);
 
     otherBirds->at(0).velocity = sf::Vector2f(0.1f, 0.1f);
     otherBirds->at(1).velocity = sf::Vector2f(1.0f, 1.0f);
@@ -75,8 +80,8 @@ protected:
 
 TEST_F(TestSwarmComputation, TestComputeAlignment) {
   // Test
-  sf::Vector2f alignment = computeAlignment(
-      *testBird, *otherBirds, neighbourhoodRadius, weight, max_speed);
+  sf::Vector2f alignment =
+      computeAlignment(*testBird, *otherBirds, neighbourhoodRadius, weight);
 
   // Assert
   sf::Vector2f expectedAlignment = sf::Vector2f(-0.129289329f, -0.129289329f);
@@ -102,8 +107,8 @@ TEST_F(TestSwarmComputation, TestComputeSeparation) {
   const float separationRadius = neighbourhoodRadius;
 
   // Test
-  sf::Vector2f separation = computeSeparation(
-      *testBird, *otherBirds, separationRadius, weight, max_speed);
+  sf::Vector2f separation =
+      computeSeparation(*testBird, *otherBirds, separationRadius, weight);
 
   // Assert
   sf::Vector2f expectedSeparation = sf::Vector2f(-0.27071068f, -0.27071068f);
@@ -114,22 +119,25 @@ TEST_F(TestSwarmComputation, TestComputeSeparation) {
 
 class TestSwarmComputationWithNoNeighbours : public ::testing::Test {
 protected:
+  std::unique_ptr<sf::Vector2u> boundary;
   std::unique_ptr<Bird> testBird;
   std::unique_ptr<std::vector<Bird>> otherBirds;
-  const float neighbourhoodRadius = 1.6f;
-  const float weight = 1.0f;
-  const float max_speed = 0.1f;
+
+  static constexpr float neighbourhoodRadius = 1.6f;
+  static constexpr float weight = 1.0f;
+  static constexpr float maxSpeed = 0.1f;
 
   void SetUp() override {
+    boundary = std::make_unique<sf::Vector2u>(50, 50);
 
-    testBird = std::make_unique<Bird>(1.0f, 1.0f);
+    testBird = std::make_unique<Bird>(1.0f, 1.0f, *boundary, maxSpeed);
     testBird->velocity = sf::Vector2f(1.0f, 1.0f);
 
     otherBirds = std::make_unique<std::vector<Bird>>();
 
-    otherBirds->emplace_back(20.0f, 20.0f);
-    otherBirds->emplace_back(3.0f, 3.0f);
-    otherBirds->emplace_back(100.0f, 100.0f);
+    otherBirds->emplace_back(20.0f, 20.0f, *boundary, maxSpeed);
+    otherBirds->emplace_back(3.0f, 3.0f, *boundary, maxSpeed);
+    otherBirds->emplace_back(100.0f, 100.0f, *boundary, maxSpeed);
 
     otherBirds->at(0).velocity = sf::Vector2f(0.1f, 0.1f);
     otherBirds->at(1).velocity = sf::Vector2f(1.0f, 1.0f);
@@ -144,8 +152,8 @@ protected:
 TEST_F(TestSwarmComputationWithNoNeighbours,
        TestComputeAlignmentCalculatesZeroWhenNoNeighbours) {
   // Test
-  sf::Vector2f alignment = computeAlignment(
-      *testBird, *otherBirds, neighbourhoodRadius, weight, max_speed);
+  sf::Vector2f alignment =
+      computeAlignment(*testBird, *otherBirds, neighbourhoodRadius, weight);
 
   // Assert
   sf::Vector2f expectedAlignment = sf::Vector2f(0.0f, 0.0f);
@@ -173,8 +181,8 @@ TEST_F(TestSwarmComputationWithNoNeighbours,
   const float separationRadius = neighbourhoodRadius;
 
   // Test
-  sf::Vector2f separation = computeSeparation(
-      *testBird, *otherBirds, separationRadius, weight, max_speed);
+  sf::Vector2f separation =
+      computeSeparation(*testBird, *otherBirds, separationRadius, weight);
 
   // Assert
   sf::Vector2f expectedSeparation = sf::Vector2f(0.0f, 0.0f);
