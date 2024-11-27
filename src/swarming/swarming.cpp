@@ -49,7 +49,7 @@ sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
 
 sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
                              const float neighbourhoodRadius,
-                             const float weight, const float maxSpeed) {
+                             const float weight) {
   sf::Vector2f cohesion(0.0f, 0.0f);
   int no_neighbours = 0;
 

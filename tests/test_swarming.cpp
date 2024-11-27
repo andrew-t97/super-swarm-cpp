@@ -50,11 +50,12 @@ protected:
   std::unique_ptr<std::vector<Bird>> otherBirds;
   const float neighbourhoodRadius = 1.6f;
   const float weight = 1.0f;
+  const float max_speed = 0.1f;
 
   void SetUp() override {
 
     testBird = std::make_unique<Bird>(1.0f, 1.0f);
-    testBird->velocity = sf::Vector2f(1.0f, 1.0f);
+    testBird->velocity = sf::Vector2f(0.2f, 0.2f);
 
     otherBirds = std::make_unique<std::vector<Bird>>();
 
@@ -64,7 +65,7 @@ protected:
 
     otherBirds->at(0).velocity = sf::Vector2f(0.1f, 0.1f);
     otherBirds->at(1).velocity = sf::Vector2f(1.0f, 1.0f);
-    otherBirds->at(2).velocity = sf::Vector2f(0.2f, 0.2f);
+    otherBirds->at(2).velocity = sf::Vector2f(0.1f, 0.1f);
   }
 
   void TearDown() override {
@@ -74,11 +75,11 @@ protected:
 
 TEST_F(TestSwarmComputation, TestComputeAlignment) {
   // Test
-  sf::Vector2f alignment = computeAlignment(*testBird, *otherBirds,
-                                            neighbourhoodRadius, weight, 3.0f);
+  sf::Vector2f alignment = computeAlignment(
+      *testBird, *otherBirds, neighbourhoodRadius, weight, max_speed);
 
   // Assert
-  sf::Vector2f expectedAlignment = sf::Vector2f(-0.850000023f, -0.850000023f);
+  sf::Vector2f expectedAlignment = sf::Vector2f(-0.129289329f, -0.129289329f);
 
   ASSERT_FLOAT_EQ(expectedAlignment.x, alignment.x);
   ASSERT_FLOAT_EQ(expectedAlignment.y, alignment.y);
@@ -86,11 +87,11 @@ TEST_F(TestSwarmComputation, TestComputeAlignment) {
 
 TEST_F(TestSwarmComputation, TestComputeCohesion) {
   // Test
-  sf::Vector2f cohesion = computeCohesion(*testBird, *otherBirds,
-                                          neighbourhoodRadius, weight, 3.0f);
+  sf::Vector2f cohesion =
+      computeCohesion(*testBird, *otherBirds, neighbourhoodRadius, weight);
 
   // Assert
-  sf::Vector2f expectedCohesion = sf::Vector2f(-0.65, -0.65);
+  sf::Vector2f expectedCohesion = sf::Vector2f(0.212132037, 0.212132037);
 
   ASSERT_FLOAT_EQ(expectedCohesion.x, cohesion.x);
   ASSERT_FLOAT_EQ(expectedCohesion.y, cohesion.y);
@@ -101,11 +102,11 @@ TEST_F(TestSwarmComputation, TestComputeSeparation) {
   const float separationRadius = neighbourhoodRadius;
 
   // Test
-  sf::Vector2f separation =
-      computeSeparation(*testBird, *otherBirds, separationRadius, weight, 3.0f);
+  sf::Vector2f separation = computeSeparation(
+      *testBird, *otherBirds, separationRadius, weight, max_speed);
 
   // Assert
-  sf::Vector2f expectedSeparation = sf::Vector2f(-0.707106769, -0.707106769);
+  sf::Vector2f expectedSeparation = sf::Vector2f(-0.27071068f, -0.27071068f);
 
   ASSERT_FLOAT_EQ(expectedSeparation.x, separation.x);
   ASSERT_FLOAT_EQ(expectedSeparation.y, separation.y);
@@ -117,6 +118,7 @@ protected:
   std::unique_ptr<std::vector<Bird>> otherBirds;
   const float neighbourhoodRadius = 1.6f;
   const float weight = 1.0f;
+  const float max_speed = 0.1f;
 
   void SetUp() override {
 
@@ -142,8 +144,8 @@ protected:
 TEST_F(TestSwarmComputationWithNoNeighbours,
        TestComputeAlignmentCalculatesZeroWhenNoNeighbours) {
   // Test
-  sf::Vector2f alignment = computeAlignment(*testBird, *otherBirds,
-                                            neighbourhoodRadius, weight, 3.0f);
+  sf::Vector2f alignment = computeAlignment(
+      *testBird, *otherBirds, neighbourhoodRadius, weight, max_speed);
 
   // Assert
   sf::Vector2f expectedAlignment = sf::Vector2f(0.0f, 0.0f);
@@ -155,8 +157,8 @@ TEST_F(TestSwarmComputationWithNoNeighbours,
 TEST_F(TestSwarmComputationWithNoNeighbours,
        TestComputeCohesionCalculatesZeroWhenNoNeighbours) {
   // Test
-  sf::Vector2f cohesion = computeCohesion(*testBird, *otherBirds,
-                                          neighbourhoodRadius, weight, 3.0f);
+  sf::Vector2f cohesion =
+      computeCohesion(*testBird, *otherBirds, neighbourhoodRadius, weight);
 
   // Assert
   sf::Vector2f expectedCohesion = sf::Vector2f(0.0f, 0.0f);
@@ -171,8 +173,8 @@ TEST_F(TestSwarmComputationWithNoNeighbours,
   const float separationRadius = neighbourhoodRadius;
 
   // Test
-  sf::Vector2f separation =
-      computeSeparation(*testBird, *otherBirds, separationRadius, weight, 3.0f);
+  sf::Vector2f separation = computeSeparation(
+      *testBird, *otherBirds, separationRadius, weight, max_speed);
 
   // Assert
   sf::Vector2f expectedSeparation = sf::Vector2f(0.0f, 0.0f);

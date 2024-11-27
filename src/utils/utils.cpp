@@ -18,11 +18,10 @@ void setVecMag(sf::Vector2f &vec, float mag) {
   }
 }
 
-// TODO: Validate this works in both negative and positive directions
 void limit_vector(sf::Vector2f &vec, float limit) {
-  float speed = norm(vec);
+  float mag = norm(vec);
 
-  if (speed > limit) {
-    vec = (vec / speed) * limit;
+  if (mag > limit) {
+    vec = (vec / mag) * limit;
   }
 }

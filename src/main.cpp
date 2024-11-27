@@ -45,8 +45,8 @@ int main(int argc, char const *argv[]) {
       sf::Vector2f alignment = computeAlignment(
           bird, birds, ALIGN_RADIUS, ALIGNMENT_WEIGHT, MAX_BIRD_SPEED);
 
-      sf::Vector2f cohesion = computeCohesion(bird, birds, COHESEION_RADIUS,
-                                              COHESION_WEIGHT, MAX_BIRD_SPEED);
+      sf::Vector2f cohesion =
+          computeCohesion(bird, birds, COHESEION_RADIUS, COHESION_WEIGHT);
 
       sf::Vector2f separation = computeSeparation(
           bird, birds, SEPARATION_RADIUS, SEPARATION_WEIGHT, MAX_BIRD_SPEED);
