@@ -11,6 +11,10 @@
 #define COHESION_PERCENT 0.00008f
 #define SEPARATION_RADIUS 30.0f
 
+#define ALIGNMENT_WEIGHT 0.5f
+#define COHESION_WEIGHT 0.5f
+#define SEPARATION_WEIGHT 0.5f
+
 #define FPS 60.0f
 
 int main(int argc, char const *argv[]) {
@@ -39,7 +43,13 @@ int main(int argc, char const *argv[]) {
     birds.emplace_back(rand() % width, rand() % height, windowSize, perception);
   }
 
-  BirdSwarm birdSwarm(birds);
+  birdSwarmWeights weights = {
+      ALIGNMENT_WEIGHT,
+      COHESION_WEIGHT,
+      SEPARATION_WEIGHT,
+  };
+
+  BirdSwarm birdSwarm(birds, weights);
 
   while (window.isOpen()) {
     sf::Event event;
