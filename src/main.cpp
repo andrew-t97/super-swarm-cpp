@@ -1,7 +1,7 @@
 #include "bird.h"
 #include "bird_swarm.h"
-#include "slider.h"
 #include "swarming.h"
+#include "weight_slider.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -30,8 +30,8 @@ int main(int argc, char const *argv[]) {
   sf::RenderWindow window(sf::VideoMode(width, height), "Swarm Demo");
   sf::Vector2u windowSize = window.getSize();
 
-  std::vector<Slider> sliders;
-  sliders.emplace_back(100, 150, 200, 15, 0, 100);
+  std::vector<WeightSlider> sliders;
+  sliders.emplace_back(sf::Vector2f(100, 150), 200, 40, "Test weight slider");
   // sliders.emplace_back(100, 250, 400, 10, 0, 200);
   // sliders.emplace_back(100, 350, 400, 10, -50, 50);
 

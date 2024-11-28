@@ -1,4 +1,7 @@
 #include "slider.h"
+#include "config.h"
+#include "utils.h"
+
 #include <format>
 
 #define CHARACTER_SIZE 16
@@ -28,9 +31,7 @@ Slider::Slider(float x, float y, float width, float height, float minValue,
   minHandlePositionX = position.x;
   maxHandlePositionX = position.x + barSize.x - handle.getRadius() * 2;
 
-  if (!font.loadFromFile("arial.ttf")) {
-    throw std::runtime_error("Failed to load font");
-  }
+  loadFont(font, std::string(Config::FONT_FILE_NAME));
 
   float spaceWidthFromEndOfBar = barSize.x * BAR_TO_TEXT_SPACE_RATIO;
 

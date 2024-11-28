@@ -25,3 +25,9 @@ void limit_vector(sf::Vector2f &vec, float limit) {
     vec = (vec / mag) * limit;
   }
 }
+
+void loadFont(sf::Font &font, std::string fontFilePath) {
+  if (!font.loadFromFile(fontFilePath)) {
+    throw std::runtime_error("Failed to load font");
+  }
+}
