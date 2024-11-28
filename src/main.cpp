@@ -1,5 +1,6 @@
 #include "bird.h"
 #include "bird_swarm.h"
+#include "slider.h"
 #include "swarming.h"
 
 #include <cstdlib>
@@ -28,6 +29,11 @@ int main(int argc, char const *argv[]) {
 
   sf::RenderWindow window(sf::VideoMode(width, height), "Swarm Demo");
   sf::Vector2u windowSize = window.getSize();
+
+  std::vector<Slider> sliders;
+  sliders.emplace_back(100, 150, 200, 15, 0, 100);
+  // sliders.emplace_back(100, 250, 400, 10, 0, 200);
+  // sliders.emplace_back(100, 350, 400, 10, -50, 50);
 
   float alignment = windowSize.x * windowSize.y * ALIGNMENT_PERCENT;
   float cohesion = windowSize.x * windowSize.y * COHESION_PERCENT;
@@ -58,7 +64,17 @@ int main(int argc, char const *argv[]) {
         window.close();
     }
 
+    // Pass events to all sliders
+    for (auto &slider : sliders) {
+      slider.handleEvent(event, window);
+    }
+
     window.clear();
+
+    // Draw all sliders
+    for (const auto &slider : sliders) {
+      slider.draw(window);
+    }
 
     birdSwarm.update();
     birdSwarm.render(window);
