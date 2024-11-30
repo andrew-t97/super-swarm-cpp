@@ -8,7 +8,7 @@ private:
   sf::Vector2f position;
   sf::Text text;
   sf::Font font;
-  std::unique_ptr<Slider> slider;
+  Slider slider;
 
 public:
   WeightSlider(const sf::Vector2f &position, const float width,

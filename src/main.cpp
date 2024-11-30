@@ -16,7 +16,20 @@
 #define COHESION_WEIGHT 0.5f
 #define SEPARATION_WEIGHT 0.5f
 
+#define SLIDER_HEIGHT 40
+#define SLIDER_WIDTH 200
+#define SLIDER_VERTICLE_SPACING 10
+#define SLIDER_VERTICLE_OFFSET (SLIDER_HEIGHT + SLIDER_VERTICLE_SPACING)
+#define SLIDERS_VERTICLE_POSITION 10
+#define SLIDERS_HORIZONTAL_POSITION 20
+
 #define FPS 60.0f
+
+typedef struct {
+  WeightSlider alignment;
+  WeightSlider cohesion;
+  WeightSlider separation;
+} weightSliders;
 
 int main(int argc, char const *argv[]) {
   sf::Clock clock;
@@ -30,10 +43,21 @@ int main(int argc, char const *argv[]) {
   sf::RenderWindow window(sf::VideoMode(width, height), "Swarm Demo");
   sf::Vector2u windowSize = window.getSize();
 
-  std::vector<WeightSlider> sliders;
-  sliders.emplace_back(sf::Vector2f(100, 150), 200, 40, "Test weight slider");
-  // sliders.emplace_back(100, 250, 400, 10, 0, 200);
-  // sliders.emplace_back(100, 350, 400, 10, -50, 50);
+  std::string t = "Test weight slider";
+
+  weightSliders sliders = {
+      WeightSlider(
+          sf::Vector2f(SLIDERS_HORIZONTAL_POSITION, SLIDERS_VERTICLE_POSITION),
+          SLIDER_WIDTH, SLIDER_HEIGHT, "Alignment"),
+      WeightSlider(
+          sf::Vector2f(SLIDERS_HORIZONTAL_POSITION,
+                       SLIDERS_VERTICLE_POSITION + SLIDER_VERTICLE_OFFSET),
+          SLIDER_WIDTH, SLIDER_HEIGHT, "Cohesion"),
+      WeightSlider(
+          sf::Vector2f(SLIDERS_HORIZONTAL_POSITION,
+                       SLIDERS_VERTICLE_POSITION + SLIDER_VERTICLE_OFFSET * 2),
+          SLIDER_WIDTH, SLIDER_HEIGHT, "Separation"),
+  };
 
   float alignment = windowSize.x * windowSize.y * ALIGNMENT_PERCENT;
   float cohesion = windowSize.x * windowSize.y * COHESION_PERCENT;
@@ -64,17 +88,16 @@ int main(int argc, char const *argv[]) {
         window.close();
     }
 
-    // Pass events to all sliders
-    for (auto &slider : sliders) {
-      slider.handleEvent(event, window);
-    }
+    sliders.alignment.handleEvent(event, window);
+    sliders.cohesion.handleEvent(event, window);
+    sliders.separation.handleEvent(event, window);
 
     window.clear();
 
     // Draw all sliders
-    for (const auto &slider : sliders) {
-      slider.draw(window);
-    }
+    sliders.alignment.draw(window);
+    sliders.cohesion.draw(window);
+    sliders.separation.draw(window);
 
     birdSwarm.update();
     birdSwarm.render(window);
