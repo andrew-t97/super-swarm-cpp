@@ -8,13 +8,9 @@
 
 #define NUM_BIRDS 200
 
-#define ALIGNMENT_PERCENT 0.00008f
-#define COHESION_PERCENT 0.00008f
-#define SEPARATION_RADIUS 30.0f
-
-#define ALIGNMENT_WEIGHT 0.5f
-#define COHESION_WEIGHT 0.5f
-#define SEPARATION_WEIGHT 0.5f
+#define ALIGNMENT_PERCEPTION_PERCENT_OF_WIN 0.00008f
+#define COHESION_PERCEPTION_PERCENT_OF_WIN 0.00008f
+#define SEPARATION_PERCEPTION_RADIUS 30.0f
 
 #define SLIDER_HEIGHT 40
 #define SLIDER_WIDTH 200
@@ -59,13 +55,15 @@ int main(int argc, char const *argv[]) {
           SLIDER_WIDTH, SLIDER_HEIGHT, "Separation"),
   };
 
-  float alignment = windowSize.x * windowSize.y * ALIGNMENT_PERCENT;
-  float cohesion = windowSize.x * windowSize.y * COHESION_PERCENT;
+  float alignmentPerception =
+      windowSize.x * windowSize.y * ALIGNMENT_PERCEPTION_PERCENT_OF_WIN;
+  float cohesionPerception =
+      windowSize.x * windowSize.y * COHESION_PERCEPTION_PERCENT_OF_WIN;
 
   const perceptionRadius perception = {
-      alignment,
-      cohesion,
-      SEPARATION_RADIUS,
+      alignmentPerception,
+      cohesionPerception,
+      SEPARATION_PERCEPTION_RADIUS,
   };
 
   std::vector<Bird> birds;
@@ -74,9 +72,9 @@ int main(int argc, char const *argv[]) {
   }
 
   birdSwarmWeights weights = {
-      ALIGNMENT_WEIGHT,
-      COHESION_WEIGHT,
-      SEPARATION_WEIGHT,
+      sliders.alignment.getValue(),
+      sliders.cohesion.getValue(),
+      sliders.separation.getValue(),
   };
 
   BirdSwarm birdSwarm(birds, weights);
@@ -99,6 +97,11 @@ int main(int argc, char const *argv[]) {
     sliders.cohesion.draw(window);
     sliders.separation.draw(window);
 
+    weights.alignment = sliders.alignment.getValue();
+    weights.cohesion = sliders.cohesion.getValue();
+    weights.separation = sliders.separation.getValue();
+
+    birdSwarm.setWeights(weights);
     birdSwarm.update();
     birdSwarm.render(window);
 
