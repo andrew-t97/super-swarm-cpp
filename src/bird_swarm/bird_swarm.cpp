@@ -22,9 +22,9 @@ void BirdSwarm::update() {
   }
 }
 
-void BirdSwarm::render(sf::RenderWindow &window) {
+void BirdSwarm::draw(sf::RenderWindow &window) {
   for (Bird &bird : birds) {
-    bird.render(window);
+    bird.draw(window);
   }
 }
 

@@ -21,6 +21,8 @@
 
 #define FPS 60.0f
 
+// TODO: Refactor things
+
 typedef struct {
   WeightSlider alignment;
   WeightSlider cohesion;
@@ -68,7 +70,9 @@ int main(int argc, char const *argv[]) {
 
   std::vector<Bird> birds;
   for (int i = 0; i < NUM_BIRDS; i++) {
-    birds.emplace_back(rand() % width, rand() % height, windowSize, perception);
+    sf::Vector2f birdPosition(
+        rand() % width, rand() % height); // TODO: Use range random instead
+    birds.emplace_back(birdPosition, windowSize, perception);
   }
 
   birdSwarmWeights weights = {
@@ -103,7 +107,7 @@ int main(int argc, char const *argv[]) {
 
     birdSwarm.setWeights(weights);
     birdSwarm.update();
-    birdSwarm.render(window);
+    birdSwarm.draw(window);
 
     window.display();
 

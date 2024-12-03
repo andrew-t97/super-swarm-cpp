@@ -3,23 +3,29 @@
 
 #include <random>
 
-Bird::Bird(float x, float y, const sf::Vector2u &boundary,
+#define MAX_BIRD_COLOUR 255
+#define MIN_BIRD_COLOUR 0
+#define BIRD_RADIUS 5.0f
+
+Bird::Bird(const sf::Vector2f &position, const sf::Vector2u &boundary,
            const perceptionRadius &perception, float maxSpeed)
-    : position(x, y), maxSpeed(maxSpeed), boundary(boundary),
+    : position(position), maxSpeed(maxSpeed), boundary(boundary),
       perception(perception) {
 
   std::random_device rd;  // obtain a random number from hardware
   std::mt19937 gen(rd()); // seed generator
-  std::uniform_int_distribution<> colorDistr(0, 255);
-  std::uniform_real_distribution<> velocityDistr(-100.0f, 100.0f);
 
-  shape.setPosition(position);
-  shape.setRadius(5.0f);
+  std::uniform_int_distribution<> colourDistr(MIN_BIRD_COLOUR, MAX_BIRD_COLOUR);
+  std::uniform_real_distribution<> velocityDistr(-MAX_BIRD_SPEED,
+                                                 MAX_BIRD_SPEED);
 
+  shape.setRadius(BIRD_RADIUS);
   shape.setFillColor(
-      sf::Color(colorDistr(gen), colorDistr(gen), colorDistr(gen)));
+      sf::Color(colourDistr(gen), colourDistr(gen),
+                colourDistr(gen))); // Randomly setting the birds colour
 
-  velocity = sf::Vector2f(velocityDistr(gen), velocityDistr(gen));
+  velocity =
+      sf::Vector2f(velocityDistr(gen), velocityDistr(gen)); // Random velocity
 }
 
 void Bird::keep_bird_within_boundary() {
@@ -47,4 +53,4 @@ void Bird::update(const sf::Vector2f &acceleration) {
   shape.setPosition(position);
 }
 
-void Bird::render(sf::RenderWindow &window) { window.draw(shape); }
+void Bird::draw(sf::RenderWindow &window) { window.draw(shape); }

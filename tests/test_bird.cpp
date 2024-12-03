@@ -7,19 +7,20 @@
 class TestBird : public ::testing::Test {
 protected:
   std::unique_ptr<Bird> testBird;
-  std::unique_ptr<const sf::Vector2u> boundary;
   std::unique_ptr<const sf::Vector2f> birdVelocity;
+  std::unique_ptr<const sf::Vector2f> birdPosition;
 
   static constexpr float maxSpeed = 2.0f;
 
   void SetUp() override {
     const perceptionRadius perception{70.0f, 70.0f, 30.0f};
+    const sf::Vector2u boundary(50, 50);
 
+    birdPosition = std::make_unique<sf::Vector2f>(1.0f, 1.0f);
     birdVelocity = std::make_unique<sf::Vector2f>(1.0f, 1.0f);
 
-    boundary = std::make_unique<sf::Vector2u>(50, 50);
     testBird =
-        std::make_unique<Bird>(1.0f, 1.0f, *boundary, perception, maxSpeed);
+        std::make_unique<Bird>(*birdPosition, boundary, perception, maxSpeed);
     testBird->velocity = *birdVelocity;
   }
 
