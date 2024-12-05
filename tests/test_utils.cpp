@@ -1,7 +1,6 @@
 #include "utils.h"
 
 #include <SFML/Graphics.hpp>
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 TEST(TestLimitVector, SpeedIsCappedWhenVectorAboveMaxSpeed) {

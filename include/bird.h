@@ -21,6 +21,10 @@ public:
   sf::Vector2f velocity;
   sf::CircleShape shape;
 
+  static constexpr int maxBirdColour = 255;
+  static constexpr int minBirdColour = 0;
+  static constexpr float birdRadius = 5.0f;
+
   /**
    * @brief Constructs a new Bird object
    *
