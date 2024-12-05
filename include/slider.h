@@ -3,8 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-// TODO: Add tests
-
 class Slider {
 public:
   /**
@@ -15,9 +13,10 @@ public:
    * @param height The height of the slider
    * @param minValue The minimum value of the slider
    * @param maxValue The maximum value of the slider
+   * @param font The font to use for the slider's value text
    */
   Slider(const sf::Vector2f &pos, const float width, const float height,
-         const float minValue, const float maxValue);
+         const float minValue, const float maxValue, const sf::Font &font);
 
   /**
    * @brief Handles SFML events for the slider e.g. the mouse dragging the
@@ -33,7 +32,7 @@ public:
    *
    * @param window The SFML window to draw the slider to
    */
-  void draw(sf::RenderWindow &window) const;
+  virtual void draw(sf::RenderWindow &window) const;
 
   /**
    * @brief Gets the current value of the slider

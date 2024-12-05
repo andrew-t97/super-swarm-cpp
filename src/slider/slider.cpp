@@ -5,9 +5,9 @@
 #include <format>
 
 Slider::Slider(const sf::Vector2f &pos, const float width, const float height,
-               const float minValue, const float maxValue)
+               const float minValue, const float maxValue, const sf::Font &font)
     : position(pos), barSize(width, height), minValue(minValue),
-      maxValue(maxValue) {
+      maxValue(maxValue), font(font) {
 
   if (minValue >= maxValue) {
     throw std::invalid_argument(
@@ -34,7 +34,6 @@ Slider::Slider(const sf::Vector2f &pos, const float width, const float height,
 }
 
 void Slider::initialiseValueText() {
-  loadFont(font, std::string(Config::FONT_FILE_NAME));
 
   float spaceWidthFromEndOfBar = barSize.x * bar_to_text_space_ratio;
 
@@ -120,8 +119,8 @@ void Slider::updateCurrentValue() {
   // Calculates the current value based on the current position of the handle
   // and its range of possible positions
   currentValue =
-      minValue + (handleCenterX - (position.x + handle.getRadius())) /
-                     (maxHandlePositionX - minHandlePositionX) *
+      minValue + ((handleCenterX - (position.x + handle.getRadius())) /
+                  (maxHandlePositionX - minHandlePositionX)) *
                      (maxValue - minValue);
 }
 

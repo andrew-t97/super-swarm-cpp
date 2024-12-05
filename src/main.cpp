@@ -1,6 +1,8 @@
 #include "bird.h"
 #include "bird_swarm.h"
+#include "config.h"
 #include "swarming.h"
+#include "utils.h"
 #include "weight_slider.h"
 
 #include <cstdlib>
@@ -24,9 +26,9 @@
 // TODO: Refactor things
 
 typedef struct {
-  WeightSlider alignment;
-  WeightSlider cohesion;
-  WeightSlider separation;
+  BasicSliderWithTitle alignment;
+  BasicSliderWithTitle cohesion;
+  BasicSliderWithTitle separation;
 } weightSliders;
 
 int main(int argc, char const *argv[]) {
@@ -43,18 +45,21 @@ int main(int argc, char const *argv[]) {
 
   std::string t = "Test weight slider";
 
+  sf::Font font;
+  loadFont(font, std::string(Config::FONT_FILE_NAME));
+
   weightSliders sliders = {
-      WeightSlider(
+      BasicSliderWithTitle(
           sf::Vector2f(SLIDERS_HORIZONTAL_POSITION, SLIDERS_VERTICLE_POSITION),
-          SLIDER_WIDTH, SLIDER_HEIGHT, "Alignment"),
-      WeightSlider(
+          SLIDER_WIDTH, SLIDER_HEIGHT, font, "Alignment"),
+      BasicSliderWithTitle(
           sf::Vector2f(SLIDERS_HORIZONTAL_POSITION,
                        SLIDERS_VERTICLE_POSITION + SLIDER_VERTICLE_OFFSET),
-          SLIDER_WIDTH, SLIDER_HEIGHT, "Cohesion"),
-      WeightSlider(
+          SLIDER_WIDTH, SLIDER_HEIGHT, font, "Cohesion"),
+      BasicSliderWithTitle(
           sf::Vector2f(SLIDERS_HORIZONTAL_POSITION,
                        SLIDERS_VERTICLE_POSITION + SLIDER_VERTICLE_OFFSET * 2),
-          SLIDER_WIDTH, SLIDER_HEIGHT, "Separation"),
+          SLIDER_WIDTH, SLIDER_HEIGHT, font, "Separation"),
   };
 
   float alignmentPerception =
@@ -101,9 +106,9 @@ int main(int argc, char const *argv[]) {
     sliders.cohesion.draw(window);
     sliders.separation.draw(window);
 
-    weights.alignment = sliders.alignment.getValue();
-    weights.cohesion = sliders.cohesion.getValue();
-    weights.separation = sliders.separation.getValue();
+    weights.alignment = sliders.alignment.getNormalizedValue();
+    weights.cohesion = sliders.cohesion.getNormalizedValue();
+    weights.separation = sliders.separation.getNormalizedValue();
 
     birdSwarm.setWeights(weights);
     birdSwarm.update();
