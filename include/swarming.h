@@ -15,10 +15,8 @@
  * radius.
  * @param neighbourhoodRadius The radius within which the other bird must be to
  * be considered in the same neighbourhood.
- * @return true If the other bird is within the neighbourhood radius of the
- * reference bird.
- * @return false If the other bird is outside the neighbourhood radius of the
- * reference bird.
+ * @return Returns true if the other bird is within the neighbourhood radius of
+ * the reference bird otherwise returns false.
  */
 bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
                                const float neighbourhoodRadius);
@@ -29,15 +27,15 @@ bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
  * This function calculates the alignment force for a bird, which is a steering
  * behavior that causes the bird to align its direction with the average
  * direction of its neighboring birds within a specified radius. The alignment
- * force helps the bird to move in a cohesive manner with its flock.
+ * force helps the bird to move in the same direction as the others in its
+ * flock.
  *
  * @param bird The bird for which the alignment force is being computed.
  * @param birds A vector containing all the birds in the flock.
- * @param neighbourhoodRadius The radius within which neighboring birds are
- * considered.
- * @param maxSpeed The maximum speed that a bird can achieve.
- * @return A 2D vector representing the alignment force to be applied to the
- * bird.
+ * @param weight The weight to apply to the alignment force, larger values
+ * increase the force.
+ * @return A vector representing the alignment force to be applied to the bird.
+ *
  */
 sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
                               const float weight);
@@ -52,12 +50,11 @@ sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
  *
  * @param bird The bird for which the cohesion vector is being computed.
  * @param birds A vector containing all the birds in the flock.
- * @param neighbourhoodRadius The radius within which neighboring birds are
- * considered.
+ * @param weight The weight to apply to the cohesion force, larger values
+ * increase the force.
  * @return A vector representing the cohesion force to be applied to the bird.
  */
 sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
-
                              const float weight);
 
 /**
@@ -71,9 +68,8 @@ sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
  *
  * @param bird The bird for which the separation force is being computed.
  * @param birds A vector containing all the birds in the flock.
- * @param separationRadius The radius within which the bird should maintain
- * separation from other birds.
- * @param maxSpeed The maximum speed that the bird can achieve.
+ * @param weight The weight to apply to the separation force, larger values
+ * increase the force.
  * @return A vector representing the separation force to be applied to the bird.
  */
 sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
