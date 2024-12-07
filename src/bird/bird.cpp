@@ -4,7 +4,7 @@
 #include <random>
 
 Bird::Bird(const sf::Vector2f &position, const sf::Vector2u &boundary,
-           const sf::Color &colour, const sf::Vector2f velocity)
+           const sf::Color &colour, const sf::Vector2f &velocity)
     : position(position), boundary(boundary), velocity(velocity) {
 
   shape.setRadius(birdRadius);

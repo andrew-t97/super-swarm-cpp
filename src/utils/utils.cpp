@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-float norm(sf::Vector2f vec) {
+float norm(sf::Vector2f &vec) {
   float square_sum = pow(vec.x, 2) + pow(vec.y, 2);
   float norm = sqrt(square_sum);
 

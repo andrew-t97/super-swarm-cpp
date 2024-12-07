@@ -11,8 +11,14 @@ class BasicSliderWithTitle : public Slider {
 public:
   /**
    * @brief creates a new instance of the BasicSliderWithTitle class
+   *
+   * @param pos The position of the slider
+   * @param width The width of the slider
+   * @param height The height of the slider
+   * @param font The font to use for the slider's value text
+   * @param sliderTitle The title to display above the slider.
    */
-  BasicSliderWithTitle(const sf::Vector2f &position, const float width,
+  BasicSliderWithTitle(const sf::Vector2f &pos, const float width,
                        const float height, const sf::Font &font,
                        const std::string &sliderTitle);
 

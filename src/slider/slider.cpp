@@ -100,7 +100,7 @@ float Slider::getNormalizedValue() const {
   return (currentValue - minValue) / (maxValue - minValue);
 }
 
-float Slider::getValue() const { return currentValue; }
+float Slider::getValue() const noexcept { return currentValue; }
 
 void Slider::setHandleXPosition(float x) {
   // Constrain handle position

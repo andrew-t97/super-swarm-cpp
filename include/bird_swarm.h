@@ -54,6 +54,15 @@ public:
    * @param window The window to draw the swarm's birds in.
    */
   void draw(sf::RenderWindow &window);
+
+  /**
+   * @brief Sets the swarm weights to the provided weights
+   *
+   * Sets the swarm weights, alignment, cohesion, separation to the provided
+   * weights.
+   *
+   * @param weights The weights to set the swarm's weights to.
+   */
   void setWeights(birdSwarmWeights &weights);
 
 private:
@@ -68,5 +77,5 @@ private:
    *
    * @return true if the weight is between 0 and 1 (inclusive), false otherwise.
    */
-  bool isWeightValid(float &weight);
+  bool isWeightValid(float weight);
 };

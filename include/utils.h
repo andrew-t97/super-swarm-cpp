@@ -9,7 +9,7 @@
  * @param vec the vector to calculate the norm of
  * @return The norm of the vector
  */
-float norm(sf::Vector2f vec);
+float norm(sf::Vector2f &vec);
 
 /**
  * @brief Limits the magnitude of a vector

@@ -24,7 +24,7 @@ public:
    * @return A new Bird object
    */
   Bird(const sf::Vector2f &startPos, const sf::Vector2u &boundary,
-       const sf::Color &colour, const sf::Vector2f velocity);
+       const sf::Color &colour, const sf::Vector2f &velocity);
 
   /**
    * @brief Updates the bird's position based on separation, cohesion, and

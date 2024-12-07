@@ -30,7 +30,7 @@ void BirdSwarm::draw(sf::RenderWindow &window) {
   }
 }
 
-bool BirdSwarm::isWeightValid(float &weight) {
+bool BirdSwarm::isWeightValid(float weight) {
   return 0.0f <= weight && weight <= 1.0f;
 }
 

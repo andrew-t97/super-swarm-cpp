@@ -39,7 +39,7 @@ public:
    *
    * @return The current value of the slider
    */
-  float getValue() const;
+  float getValue() const noexcept;
 
   /**
    * @brief Gets the value of the slider normalised between 0 and 1
