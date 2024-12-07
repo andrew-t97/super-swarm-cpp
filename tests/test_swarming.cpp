@@ -123,7 +123,7 @@ TEST_F(TestSwarmComputation, TestComputeSeparation) {
       *testBird, *otherBirds, perception.separationRadius, weight);
 
   // Assert
-  sf::Vector2f expectedSeparation = sf::Vector2f(-0.212132037, -0.212132037);
+  sf::Vector2f expectedSeparation = sf::Vector2f(-0.31819806, -0.31819806);
 
   ASSERT_FLOAT_EQ(expectedSeparation.x, separation.x);
   ASSERT_FLOAT_EQ(expectedSeparation.y, separation.y);

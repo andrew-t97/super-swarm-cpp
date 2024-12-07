@@ -11,7 +11,7 @@ public:
   sf::Vector2f velocity;
   sf::CircleShape shape;
 
-  static constexpr float maxSpeed = 5.0f;
+  static constexpr float maxSpeed = 6.0f;
   static constexpr float birdRadius = 5.0f;
 
   /**

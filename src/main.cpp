@@ -11,10 +11,8 @@
 #include <random>
 
 // Change these to constexprs
-#define NUM_BIRDS 500
+#define NUM_BIRDS 200
 
-#define ALIGNMENT_PERCEPTION_PERCENT_OF_WIN 0.00008f
-#define COHESION_PERCEPTION_PERCENT_OF_WIN 0.00008f
 #define SEPARATION_PERCEPTION_RADIUS 30.0f
 
 #define SLIDER_HEIGHT 40
@@ -90,8 +88,8 @@ int main(int argc, char const *argv[]) {
           SLIDER_WIDTH, SLIDER_HEIGHT, font, "Separation"),
   };
 
-  float alignmentPerception = std::min(windowSize.x, windowSize.y) * 0.05;
-  float cohesionPerception = std::min(windowSize.x, windowSize.y) * 0.05;
+  float alignmentPerception = std::min(windowSize.x, windowSize.y) * 0.075;
+  float cohesionPerception = std::min(windowSize.x, windowSize.y) * 0.075;
 
   const swarmPerceptionRadii perception = {
       alignmentPerception,

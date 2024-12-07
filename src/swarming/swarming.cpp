@@ -103,7 +103,7 @@ sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
 
     separation -= bird.velocity;
 
-    limit_vector(separation, maxForce);
+    limit_vector(separation, maxSeparationForce);
 
     separation *= weight;
   }
