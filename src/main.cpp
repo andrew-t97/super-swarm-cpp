@@ -36,6 +36,14 @@ typedef struct {
   BasicSliderWithTitle separation;
 } weightSliders;
 
+/**
+ * @brief Creates a vector of Bird objects with random colours, positions, and
+ * velocities.
+ *
+ * @param windowSize The size of the window the birds will be rendered in.
+ * @return Returns a vector of Bird objects all positioned within the dimensions
+ * of the provided window size.
+ */
 std::vector<Bird> createBirds(sf::Vector2u windowSize) {
   std::random_device rd;  // obtain a random number from hardware
   std::mt19937 gen(rd()); // seed generator
@@ -59,6 +67,14 @@ std::vector<Bird> createBirds(sf::Vector2u windowSize) {
   return birds;
 }
 
+/**
+ * @brief creates a set of sliders for controlling the weights of a BirdSwarm.
+ *
+ * @param font The font to use for text rendered by the sliders.
+ *
+ * @return Returns a weightSliders struct containing sliders for alignment,
+ * cohesion, and separation.
+ */
 weightSliders createSliders(sf::Font &font) {
   return {
       BasicSliderWithTitle(sf::Vector2f(GraphicalConfig::sliderPositionX,
@@ -82,6 +98,16 @@ weightSliders createSliders(sf::Font &font) {
   };
 }
 
+/**
+ * @brief Fetches events from the provided window and runs the provided sliders
+ * handlers.
+ *
+ * When the sliders handle an event they will each check for mouse clicks and
+ * moves to determine if their value should be updated.
+ *
+ * @param window The window to fetch events from.
+ * @param sliders The sliders which will handle the events.
+ */
 void handleEvents(sf::RenderWindow &window, weightSliders &sliders) {
   sf::Event event;
   while (window.pollEvent(event)) {
@@ -94,6 +120,13 @@ void handleEvents(sf::RenderWindow &window, weightSliders &sliders) {
   sliders.separation.handleEvent(event, window);
 }
 
+/**
+ * @brief  the provided sliders and birdSwarm to the provided window.
+ *
+ * @param window The window to draw the provided sliders and birdSwarm to.
+ * @param sliders The sliders to draw to the provided window.
+ * @param birdSwarm The birdSwarm to draw to the provided window.
+ */
 void draw(sf::RenderWindow &window, weightSliders &sliders,
           BirdSwarm birdSwarm) {
   sliders.alignment.draw(window);
@@ -106,8 +139,6 @@ void draw(sf::RenderWindow &window, weightSliders &sliders,
 int main(int argc, char const *argv[]) {
   sf::Clock clock;
   const sf::Time timePerFrame = sf::seconds(1.0f / SimConfig::fps);
-
-  srand(static_cast<unsigned>(time(0))); // Setting up random
 
   unsigned int width = sf::VideoMode::getDesktopMode().width;
   unsigned int height = sf::VideoMode::getDesktopMode().height;
