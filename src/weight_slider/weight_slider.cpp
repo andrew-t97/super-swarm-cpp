@@ -1,5 +1,4 @@
 #include "weight_slider.h"
-#include "config.h"
 #include "utils.h"
 
 BasicSliderWithTitle::BasicSliderWithTitle(const sf::Vector2f &position,
