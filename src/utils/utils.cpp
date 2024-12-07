@@ -22,7 +22,8 @@ void limit_vector(sf::Vector2f &vec, float limit) {
   float mag = norm(vec);
 
   if (mag > limit) {
-    vec = (vec / mag) * limit;
+    sf::Vector2f normalisedVec = vec / mag;
+    vec = normalisedVec * limit;
   }
 }
 

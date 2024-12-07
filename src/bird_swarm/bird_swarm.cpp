@@ -1,20 +1,22 @@
 #include "bird_swarm.h"
-#include "swarming.h"
 
 BirdSwarm::BirdSwarm(const std::vector<Bird> &swarmingBirds,
+                     const swarmPerceptionRadii &perceptionRadii,
                      birdSwarmWeights &weights)
-    : birds(swarmingBirds), swarmWeights(weights) {}
+    : birds(swarmingBirds), perceptionRadii(perceptionRadii),
+      swarmWeights(weights) {}
 
 void BirdSwarm::update() {
 
   for (Bird &bird : birds) {
-    sf::Vector2f alignment =
-        computeAlignment(bird, birds, swarmWeights.alignment);
+    sf::Vector2f alignment = computeAlignment(
+        bird, birds, perceptionRadii.alignmentRadius, swarmWeights.alignment);
 
-    sf::Vector2f cohesion = computeCohesion(bird, birds, swarmWeights.cohesion);
+    sf::Vector2f cohesion = computeCohesion(
+        bird, birds, perceptionRadii.cohesionRadius, swarmWeights.cohesion);
 
-    sf::Vector2f separation =
-        computeSeparation(bird, birds, swarmWeights.separation);
+    sf::Vector2f separation = computeSeparation(
+        bird, birds, perceptionRadii.separationRadius, swarmWeights.separation);
 
     sf::Vector2f acceleration = alignment + cohesion + separation;
 

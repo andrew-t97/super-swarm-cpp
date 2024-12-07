@@ -2,40 +2,29 @@
 
 #include <SFML/Graphics.hpp>
 
-#define MAX_BIRD_SPEED 6.0f
-
-typedef struct {
-  const float alignmentRadius;
-  const float cohesionRadius;
-  const float separationRadius;
-} perceptionRadius;
-
 class Bird {
 
 public:
-  const float maxSpeed;
   const sf::Vector2u boundary;
-  const perceptionRadius perception;
 
   sf::Vector2f position;
   sf::Vector2f velocity;
   sf::CircleShape shape;
 
-  static constexpr int maxBirdColour = 255;
-  static constexpr int minBirdColour = 0;
+  static constexpr float maxSpeed = 5.0f;
   static constexpr float birdRadius = 5.0f;
 
   /**
    * @brief Constructs a new Bird object
    *
-   * @param startPos The starting position of the bird
-   * @param boundary The boundary of the bird's movement
-   * @param perception The perception radius of the bird
-   * @param maxSpeed The maximum speed of the bird
+   * @param startPos The starting position of the bird.
+   * @param boundary The boundary of the bird's movement.
+   * @param colour The colour of the bird.
+   * @param velocity The starting velocity of the bird.
    * @return A new Bird object
    */
   Bird(const sf::Vector2f &startPos, const sf::Vector2u &boundary,
-       const perceptionRadius &perception, float maxSpeed = MAX_BIRD_SPEED);
+       const sf::Color &colour, const sf::Vector2f velocity);
 
   /**
    * @brief Updates the bird's position based on separation, cohesion, and

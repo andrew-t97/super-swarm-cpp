@@ -3,8 +3,8 @@
 
 #include <cmath>
 
-#define MAX_FORCE 0.3f
-#define MAX_SEPARATION_FORCE (MAX_FORCE * 1.5f)
+constexpr float maxForce = 0.3f;
+constexpr float maxSeparationForce = maxForce * 1.5f;
 
 bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
                                const float neighbourhoodRadius) {
@@ -14,31 +14,29 @@ bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
 }
 
 sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
+                              const float perceptionRadius,
                               const float weight) {
   sf::Vector2f alignment(0.0f, 0.0f);
   int no_neighbours = 0;
 
   for (const Bird &other : birds) {
 
-    if (&bird != &other && isBirdInSameNeighbourhood(
-                               bird, other, bird.perception.alignmentRadius)) {
+    if (&bird != &other &&
+        isBirdInSameNeighbourhood(bird, other, perceptionRadius)) {
       alignment += other.velocity;
       ++no_neighbours;
     }
   }
 
   if (no_neighbours > 0) {
-    // Taking the average vector (direction)
     alignment /= (float)(no_neighbours);
 
-    // Set magnitude/speed to max
+    // Set magnitude/speed to max to keep momentum
     setVecMag(alignment, bird.maxSpeed);
 
-    // Find the difference between the birds
     alignment -= bird.velocity;
 
-    // Prevent vector exceeding max steering force
-    limit_vector(alignment, MAX_FORCE);
+    limit_vector(alignment, maxForce);
 
     alignment *= weight;
   }
@@ -47,28 +45,26 @@ sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
 }
 
 sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
-                             const float weight) {
+                             const float perceptionRadius, const float weight) {
   sf::Vector2f cohesion(0.0f, 0.0f);
   int no_neighbours = 0;
 
   for (const Bird &other : birds) {
-    if (&bird != &other && isBirdInSameNeighbourhood(
-                               bird, other, bird.perception.cohesionRadius)) {
+    if (&bird != &other &&
+        isBirdInSameNeighbourhood(bird, other, perceptionRadius)) {
       cohesion += other.position;
       ++no_neighbours;
     }
   }
 
   if (no_neighbours > 0) {
-    // Taking the average position of all neighbours
     cohesion /= (float)no_neighbours;
 
     // Finding difference between bird's current position and it's
     // neighbours average position
     cohesion -= bird.position;
 
-    // Prevent vector exceeding max steering force
-    limit_vector(cohesion, MAX_FORCE);
+    limit_vector(cohesion, maxForce);
 
     cohesion *= weight;
   }
@@ -77,6 +73,7 @@ sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
 }
 
 sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
+                               const float perceptionRadius,
                                const float weight) {
   sf::Vector2f separation(0.0f, 0.0f);
   int no_neighbours = 0;
@@ -85,13 +82,12 @@ sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
     float distance = std::hypot(other.position.x - bird.position.x,
                                 other.position.y - bird.position.y);
 
-    if (&bird != &other && distance < bird.perception.separationRadius) {
+    if (&bird != &other &&
+        isBirdInSameNeighbourhood(bird, other, perceptionRadius)) {
       sf::Vector2f difference = bird.position - other.position;
 
       sf::Vector2f repulsion =
-          difference *
-          (float)pow(1 - (norm(difference) / bird.perception.separationRadius),
-                     2);
+          difference * (float)pow(1 - (norm(difference) / perceptionRadius), 2);
 
       separation += repulsion;
 
@@ -100,16 +96,14 @@ sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
   }
 
   if (no_neighbours > 0) {
-    separation /= (float)(no_neighbours); // Taking the average separation of
-    // all neighbours
+    separation /= (float)(no_neighbours);
 
-    // Set magnitude/speed to max
+    // Set magnitude/speed to max to keep momentum
     setVecMag(separation, bird.maxSpeed);
 
     separation -= bird.velocity;
 
-    // Prevent vector exceeding max steering force
-    limit_vector(separation, MAX_SEPARATION_FORCE);
+    limit_vector(separation, maxForce);
 
     separation *= weight;
   }

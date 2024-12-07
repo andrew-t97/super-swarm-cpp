@@ -3,6 +3,12 @@
 #include "bird.h"
 #include <SFML/Graphics.hpp>
 
+typedef struct {
+  const float alignmentRadius;
+  const float cohesionRadius;
+  const float separationRadius;
+} swarmPerceptionRadii;
+
 /**
  * @brief Checks if one bird is within the same neighbourhood radius of another
  * bird.
@@ -32,13 +38,15 @@ bool isBirdInSameNeighbourhood(const Bird &bird, const Bird &other,
  *
  * @param bird The bird for which the alignment force is being computed.
  * @param birds A vector containing all the birds in the flock.
+ * @param perceptionRadius The radius within which other birds are considered in
+ * the alignment force calculation.
  * @param weight The weight to apply to the alignment force, larger values
  * increase the force.
  * @return A vector representing the alignment force to be applied to the bird.
  *
  */
 sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
-                              const float weight);
+                              const float perceptionRadius, const float weight);
 
 /**
  * @brief Computes the cohesion vector for a given bird within a flock.
@@ -50,12 +58,14 @@ sf::Vector2f computeAlignment(const Bird &bird, const std::vector<Bird> &birds,
  *
  * @param bird The bird for which the cohesion vector is being computed.
  * @param birds A vector containing all the birds in the flock.
+ * @param perceptionRadius The radius within which other birds are considered in
+ * the cohesion force calculation.
  * @param weight The weight to apply to the cohesion force, larger values
  * increase the force.
  * @return A vector representing the cohesion force to be applied to the bird.
  */
 sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
-                             const float weight);
+                             const float perceptionRadius, const float weight);
 
 /**
  * @brief Computes the separation force for a given bird to avoid crowding local
@@ -68,9 +78,12 @@ sf::Vector2f computeCohesion(const Bird &bird, const std::vector<Bird> &birds,
  *
  * @param bird The bird for which the separation force is being computed.
  * @param birds A vector containing all the birds in the flock.
+ * @param perceptionRadius The radius within which other birds are considered in
+ * the separation force calculation.
  * @param weight The weight to apply to the separation force, larger values
  * increase the force.
  * @return A vector representing the separation force to be applied to the bird.
  */
 sf::Vector2f computeSeparation(const Bird &bird, const std::vector<Bird> &birds,
+                               const float perceptionRadius,
                                const float weight);

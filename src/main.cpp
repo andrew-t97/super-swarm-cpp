@@ -5,10 +5,13 @@
 #include "utils.h"
 #include "weight_slider.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include <random>
 
-#define NUM_BIRDS 200
+// Change these to constexprs
+#define NUM_BIRDS 500
 
 #define ALIGNMENT_PERCEPTION_PERCENT_OF_WIN 0.00008f
 #define COHESION_PERCEPTION_PERCENT_OF_WIN 0.00008f
@@ -20,10 +23,35 @@
 #define SLIDER_VERTICLE_OFFSET (SLIDER_HEIGHT + SLIDER_VERTICLE_SPACING)
 #define SLIDERS_VERTICLE_POSITION 10
 #define SLIDERS_HORIZONTAL_POSITION 20
+#define MAX_COLOUR 255
 
 #define FPS 60.0f
 
-// TODO: Refactor things
+std::vector<Bird> createBirds(sf::Vector2u windowSize) {
+  std::random_device rd;  // obtain a random number from hardware
+  std::mt19937 gen(rd()); // seed generator
+
+  std::uniform_int_distribution<> colourDistr(0, MAX_COLOUR);
+
+  std::uniform_real_distribution<> widthDistr(windowSize.x);
+  std::uniform_real_distribution<> heightDistr(windowSize.y);
+  std::uniform_real_distribution<> velocityDistr(-Bird::maxSpeed,
+                                                 Bird::maxSpeed);
+
+  std::vector<Bird> birds;
+  for (int i = 0; i < NUM_BIRDS; i++) {
+    sf::Color colour(colourDistr(gen), colourDistr(gen), colourDistr(gen));
+    sf::Vector2f birdPosition(widthDistr(gen), heightDistr(gen));
+    sf::Vector2f velocity(velocityDistr(gen), velocityDistr(gen));
+
+    birds.emplace_back(birdPosition, windowSize, colour, velocity);
+  }
+
+  return birds;
+}
+
+// TODO: Fix swarming tests
+// TODO: Refactor things in here
 
 typedef struct {
   BasicSliderWithTitle alignment;
@@ -62,23 +90,14 @@ int main(int argc, char const *argv[]) {
           SLIDER_WIDTH, SLIDER_HEIGHT, font, "Separation"),
   };
 
-  float alignmentPerception =
-      windowSize.x * windowSize.y * ALIGNMENT_PERCEPTION_PERCENT_OF_WIN;
-  float cohesionPerception =
-      windowSize.x * windowSize.y * COHESION_PERCEPTION_PERCENT_OF_WIN;
+  float alignmentPerception = std::min(windowSize.x, windowSize.y) * 0.05;
+  float cohesionPerception = std::min(windowSize.x, windowSize.y) * 0.05;
 
-  const perceptionRadius perception = {
+  const swarmPerceptionRadii perception = {
       alignmentPerception,
       cohesionPerception,
       SEPARATION_PERCEPTION_RADIUS,
   };
-
-  std::vector<Bird> birds;
-  for (int i = 0; i < NUM_BIRDS; i++) {
-    sf::Vector2f birdPosition(
-        rand() % width, rand() % height); // TODO: Use range random instead
-    birds.emplace_back(birdPosition, windowSize, perception);
-  }
 
   birdSwarmWeights weights = {
       sliders.alignment.getValue(),
@@ -86,7 +105,8 @@ int main(int argc, char const *argv[]) {
       sliders.separation.getValue(),
   };
 
-  BirdSwarm birdSwarm(birds, weights);
+  const std::vector<Bird> birds = createBirds(windowSize);
+  BirdSwarm birdSwarm(birds, perception, weights);
 
   while (window.isOpen()) {
     sf::Event event;

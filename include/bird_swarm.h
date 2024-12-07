@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bird.h"
+#include "swarming.h"
 
 typedef struct {
   float alignment;
@@ -31,9 +32,13 @@ public:
    * @brief Constructs a new Bird Swarm object
    *
    * @param swarmingBirds The collection of birds that will be part of the swarm
+   * @param perceptionRadii The radius for each of the components of the
+   * swarming behaviour i.e. alignment, cohesion, separation for each bird.
    * @param weights The weights for alignment, cohesion, and separation
    */
-  BirdSwarm(const std::vector<Bird> &swarmingBirds, birdSwarmWeights &weights);
+  BirdSwarm(const std::vector<Bird> &swarmingBirds,
+            const swarmPerceptionRadii &perceptionRadii,
+            birdSwarmWeights &weights);
 
   /**
    * @brief Calculates a new set of forces and updates the bird positions.
@@ -53,6 +58,7 @@ public:
 
 private:
   birdSwarmWeights swarmWeights;
+  swarmPerceptionRadii perceptionRadii;
   std::vector<Bird> birds;
 
   /**
