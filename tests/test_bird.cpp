@@ -1,8 +1,8 @@
-#include <SFML/Graphics.hpp>
-#include <gtest/gtest.h>
-
 #include "bird.h"
 #include "utils.h"
+
+#include <SFML/Graphics.hpp>
+#include <gtest/gtest.h>
 
 class TestBird : public ::testing::Test {
 protected:

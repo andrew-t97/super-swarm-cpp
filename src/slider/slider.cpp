@@ -1,5 +1,4 @@
 #include "slider.h"
-#include "utils.h"
 
 #include <format>
 

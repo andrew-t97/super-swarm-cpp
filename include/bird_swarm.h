@@ -3,6 +3,8 @@
 #include "bird.h"
 #include "swarming.h"
 
+#include <SFML/Graphics.hpp>
+
 typedef struct {
   float alignment;
   float cohesion;

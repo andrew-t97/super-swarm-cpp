@@ -1,6 +1,5 @@
 #include "bird.h"
 #include "bird_swarm.h"
-#include "swarming.h"
 #include "utils.h"
 #include "weight_slider.h"
 
@@ -8,8 +7,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
-
-// Change these to constexprs
 
 namespace SimConfig {
 constexpr int numBirds = 200;

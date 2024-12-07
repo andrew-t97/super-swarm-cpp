@@ -1,7 +1,7 @@
+#include "swarming.h"
+
 #include <SFML/Graphics.hpp>
 #include <gtest/gtest.h>
-
-#include "swarming.h"
 
 class TestisBirdInSameNeighbourhood : public ::testing::Test {
 protected:

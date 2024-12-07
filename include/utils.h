@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <type_traits>
 
 /**
  * @brief Calculates the norm of a vector
