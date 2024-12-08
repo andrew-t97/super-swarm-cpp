@@ -45,7 +45,7 @@ public:
    *
    * @return The normalised value of the slider
    */
-  float getNormalizedValue() const;
+  float getNormalisedValue() const;
 
 private:
   static constexpr int character_size = 16;

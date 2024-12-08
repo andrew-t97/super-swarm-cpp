@@ -24,7 +24,7 @@ constexpr int sliderVerticalSpacing = 10;
 constexpr int sliderVerticalOffset = sliderHeight + sliderVerticalSpacing;
 constexpr int sliderPositionX = sliderVerticalSpacing;
 constexpr int sliderPositionY = 20;
-constexpr int maxColor = 255;
+constexpr int maxColour = 255;
 } // namespace GraphicalConfig
 
 typedef struct {
@@ -45,7 +45,7 @@ std::vector<Bird> createBirds(sf::Vector2u windowSize) {
   std::random_device rd;  // obtain a random number from hardware
   std::mt19937 gen(rd()); // seed generator
 
-  std::uniform_int_distribution<> colourDistr(0, GraphicalConfig::maxColor);
+  std::uniform_int_distribution<> colourDistr(0, GraphicalConfig::maxColour);
 
   std::uniform_real_distribution<> widthDistr(windowSize.x);
   std::uniform_real_distribution<> heightDistr(windowSize.y);
@@ -172,9 +172,9 @@ int main(int argc, char const *argv[]) {
 
     window.clear();
 
-    weights.alignment = sliders.alignment.getNormalizedValue();
-    weights.cohesion = sliders.cohesion.getNormalizedValue();
-    weights.separation = sliders.separation.getNormalizedValue();
+    weights.alignment = sliders.alignment.getNormalisedValue();
+    weights.cohesion = sliders.cohesion.getNormalisedValue();
+    weights.separation = sliders.separation.getNormalisedValue();
 
     birdSwarm.setWeights(weights);
     birdSwarm.update();

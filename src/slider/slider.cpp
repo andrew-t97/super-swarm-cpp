@@ -95,7 +95,7 @@ void Slider::draw(sf::RenderWindow &window) const {
   window.draw(valueText);
 }
 
-float Slider::getNormalizedValue() const {
+float Slider::getNormalisedValue() const {
   return (currentValue - minValue) / (maxValue - minValue);
 }
 
@@ -123,7 +123,7 @@ void Slider::updateCurrentValue() {
 }
 
 void Slider::updateValueText() {
-  std::string text = std::format("{:.2f}", getNormalizedValue());
+  std::string text = std::format("{:.2f}", getNormalisedValue());
   valueText.setString(text);
 }
 

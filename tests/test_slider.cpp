@@ -85,5 +85,5 @@ TEST_F(TestSliderValueCaclulation,
       (slider->getValue() - minValue) / (maxValue - minValue);
 
   // Assert
-  ASSERT_FLOAT_EQ(expectedNormalisedValue, slider->getNormalizedValue());
+  ASSERT_FLOAT_EQ(expectedNormalisedValue, slider->getNormalisedValue());
 }
