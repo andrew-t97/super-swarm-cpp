@@ -8,10 +8,7 @@ add_subdirectory(weight_slider)
 add_executable (swarm_demo main.cpp)
 target_link_libraries(swarm_demo utils slider weight_slider bird swarming bird_swarm)
 
-# Post-build command
-add_custom_command(
-    TARGET swarm_demo POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_SOURCE_DIR}/font/arial.ttf
-            $<TARGET_FILE_DIR:swarm_demo>
+add_custom_target(copy_font
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/font ${CMAKE_CURRENT_BINARY_DIR}/font
 )
+add_dependencies(swarm_demo copy_font)

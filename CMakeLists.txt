@@ -13,4 +13,11 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_subdirectory(src)
 add_subdirectory(tests)
 
+# Install the executable
+install(TARGETS swarm_demo
+    RUNTIME DESTINATION bin)
 
+# Install the fonts
+install(DIRECTORY font/
+    DESTINATION bin/font
+    FILES_MATCHING PATTERN "*.ttf")

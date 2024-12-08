@@ -17,7 +17,7 @@ constexpr float alignmentRadiusRatio = 0.075;
 } // namespace SimConfig
 
 namespace GraphicalConfig {
-constexpr std::string_view fontFileName = "arial.ttf";
+constexpr std::string_view fontFileName = "font/arial.ttf";
 constexpr int sliderHeight = 40;
 constexpr int sliderWidth = 200;
 constexpr int sliderVerticalSpacing = 10;
