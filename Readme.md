@@ -40,7 +40,7 @@ Within the simulation, you can adjust the weights of each of the simulation's ru
 
 After building, you can navigate to the build's source dir where you can run the executable:
 ```sh
-cd ./build/src
+cd build/src
 ./swarm_demo
 ```
 
